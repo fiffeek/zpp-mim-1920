@@ -1,4 +1,3 @@
-from absl import flags
 import os
 import sys
 import json
@@ -14,29 +13,6 @@ from tensorflow.keras.utils import Progbar
 
 sys.path.append("bert")
 auth.authenticate_user()
-
-FLAGS = flags.FLAGS
-
-# Cloud TPU Cluster Resolvers
-flags.DEFINE_string(
-    'tpu', default='devshell-vm-33444283-d998-465d-89d5-99a3bee1b061',
-    help='The Cloud TPU to use for training. This should be either the name '
-    'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
-flags.DEFINE_string(
-    'tpu_zone', default='europe-west4-a',
-    help='GCE zone where the Cloud TPU is located in. If not specified, we '
-    'will attempt to automatically detect the GCE project from metadata.')
-
-tpu_cluster_resolver = tf.contrib.cluster_resolver.TPUClusterResolver(
-      FLAGS.tpu_name,
-      zone=FLAGS.tpu_zone,
-      project=FLAGS.gcp_project)
-config = tf.contrib.tpu.RunConfig(
-      cluster=tpu_cluster_resolver,
-      model_dir=FLAGS.model_dir,
-      tpu_config=tf.contrib.tpu.TPUConfig(
-          num_shards=FLAGS.num_shards,
-          iterations_per_loop=FLAGS.iterations_per_loop))
 
 sys.path.append("bert")
 
@@ -56,24 +32,7 @@ sh.setLevel(logging.INFO)
 sh.setFormatter(formatter)
 log.handlers = [sh]
 
-if 'COLAB_TPU_ADDR' in os.environ:
-  log.info("Using TPU runtime")
-  USE_TPU = True
-  TPU_ADDRESS = 'grpc://' + os.environ['COLAB_TPU_ADDR']
-
-  with tf.Session(TPU_ADDRESS) as session:
-    log.info('TPU address is ' + TPU_ADDRESS)
-    # Upload credentials to TPU.
-    with open('/content/adc.json', 'r') as f:
-      auth_info = json.load(f)
-    tf.contrib.cloud.configure_gcs(session, credentials=auth_info)
-    
-else:
-  log.warning('Not connected to TPU runtime')
-  USE_TPU = False
-
-
-
+USE_TPU = True
 AVAILABLE =  {'af','ar','bg','bn','br','bs','ca','cs',
               'da','de','el','en','eo','es','et','eu',
               'fa','fi','fr','gl','he','hi','hr','hu',
@@ -228,16 +187,19 @@ model_fn = model_fn_builder(
       use_tpu=USE_TPU,
       use_one_hot_embeddings=True)
 
-tpu_cluster_resolver = tf.contrib.cluster_resolver.TPUClusterResolver(TPU_ADDRESS)
+tpu_cluster_resolver = tf.contrib.cluster_resolver.TPUClusterResolver(
+      "devshell-vm-33444283-d998-465d-89d5-99a3bee1b061",
+      zone="europe-west4-a",
+      project="zpp-mim-1920")
 
 run_config = tf.contrib.tpu.RunConfig(
-    cluster=tpu_cluster_resolver,
-    model_dir=BERT_GCS_DIR,
-    save_checkpoints_steps=SAVE_CHECKPOINTS_STEPS,
-    tpu_config=tf.contrib.tpu.TPUConfig(
-        iterations_per_loop=SAVE_CHECKPOINTS_STEPS,
-        num_shards=NUM_TPU_CORES,
-        per_host_input_for_training=tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2))
+      cluster=tpu_cluster_resolver,
+      model_dir=BERT_GCS_DIR,
+      save_checkpoints_steps=SAVE_CHECKPOINTS_STEPS,
+      tpu_config=tf.contrib.tpu.TPUConfig(
+          iterations_per_loop=SAVE_CHECKPOINTS_STEPS,
+          num_shards=NUM_TPU_CORES,
+          per_host_input_for_training=tf.contrib.tpu.InputPipelineConfig.PER_HOST_V2))
 
 estimator = tf.contrib.tpu.TPUEstimator(
     use_tpu=USE_TPU,
