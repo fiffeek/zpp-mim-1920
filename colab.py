@@ -13,10 +13,6 @@ from google.colab import auth, drive
 from tensorflow.keras.utils import Progbar
 
 sys.path.append("bert")
-
-from bert import modeling, optimization, tokenization
-from bert.run_pretraining import input_fn_builder, model_fn_builder
-
 auth.authenticate_user()
 
 FLAGS = flags.FLAGS
@@ -26,10 +22,6 @@ flags.DEFINE_string(
     'tpu', default='devshell-vm-33444283-d998-465d-89d5-99a3bee1b061',
     help='The Cloud TPU to use for training. This should be either the name '
     'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
-flags.DEFINE_string(
-    'gcp_project', default='zpp-mim-1920',
-    help='Project name for the Cloud TPU-enabled project. If not specified, we '
-    'will attempt to automatically detect the GCE project from metadata.')
 flags.DEFINE_string(
     'tpu_zone', default='europe-west4-a',
     help='GCE zone where the Cloud TPU is located in. If not specified, we '
