@@ -103,7 +103,7 @@ PROCESSES = 2 #@param {type:"integer"}
 # tf.gfile.MkDir(PRETRAINING_DIR)
 # !$XARGS_CMD
 
-BUCKET_NAME = "bert-bucket-golkarolka" #@param {type:"string"}
+BUCKET_NAME = "zpp-bucket-1920" #@param {type:"string"}
 MODEL_DIR = "bert_model" #@param {type:"string"}
 tf.gfile.MkDir(MODEL_DIR)
 
