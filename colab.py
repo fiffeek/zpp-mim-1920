@@ -142,8 +142,8 @@ with open("{}/{}".format(MODEL_DIR, VOC_FNAME), "w") as fo:
 
 
 BUCKET_NAME = "zpp-bucket-1920" #@param {type:"string"}
-MODEL_DIR = "bert_model" #@param {type:"string"}
-PRETRAINING_DIR = "pretraining_data" #@param {type:"string"}
+MODEL_DIR = "bert-bucket-golkarolka/bert_model" #@param {type:"string"}
+PRETRAINING_DIR = "bert-bucket-golkarolka/pretraining_data" #@param {type:"string"}
 VOC_FNAME = "vocab.txt" #@param {type:"string"}
 
 # Input data pipeline config
