@@ -1,6 +1,4 @@
-!pip install sentencepiece
-!git clone https://github.com/google-research/bert
-
+from absl import flags
 import os
 import sys
 import json
@@ -13,6 +11,40 @@ import sentencepiece as spm
 from glob import glob
 from google.colab import auth, drive
 from tensorflow.keras.utils import Progbar
+
+sys.path.append("bert")
+
+from bert import modeling, optimization, tokenization
+from bert.run_pretraining import input_fn_builder, model_fn_builder
+
+auth.authenticate_user()
+
+FLAGS = flags.FLAGS
+
+# Cloud TPU Cluster Resolvers
+flags.DEFINE_string(
+    'tpu', default='devshell-vm-33444283-d998-465d-89d5-99a3bee1b061',
+    help='The Cloud TPU to use for training. This should be either the name '
+    'used when creating the Cloud TPU, or a grpc://ip.address.of.tpu:8470 url.')
+flags.DEFINE_string(
+    'gcp_project', default='zpp-mim-1920',
+    help='Project name for the Cloud TPU-enabled project. If not specified, we '
+    'will attempt to automatically detect the GCE project from metadata.')
+flags.DEFINE_string(
+    'tpu_zone', default='europe-west4-a',
+    help='GCE zone where the Cloud TPU is located in. If not specified, we '
+    'will attempt to automatically detect the GCE project from metadata.')
+
+tpu_cluster_resolver = tf.contrib.cluster_resolver.TPUClusterResolver(
+      FLAGS.tpu_name,
+      zone=FLAGS.tpu_zone,
+      project=FLAGS.gcp_project)
+config = tf.contrib.tpu.RunConfig(
+      cluster=tpu_cluster_resolver,
+      model_dir=FLAGS.model_dir,
+      tpu_config=tf.contrib.tpu.TPUConfig(
+          num_shards=FLAGS.num_shards,
+          iterations_per_loop=FLAGS.iterations_per_loop))
 
 sys.path.append("bert")
 
@@ -64,9 +96,6 @@ LANG_CODE = "en" #@param {type:"string"}
 
 assert LANG_CODE in AVAILABLE, "Invalid language code selected"
 
-!gsutil cp gs://bert-bucket-golkarolka/thms_ls.train .
-!gsutil cp gs://bert-bucket-golkarolka/vocab_thms_ls.txt .
-
 MODEL_PREFIX = "tokenizer" #@param {type: "string"}
 VOC_SIZE = 2000 #@param {type:"integer"}
 SUBSAMPLE_SIZE = 60000 #@param {type:"integer"}
@@ -91,8 +120,6 @@ with open(VOC_FNAME, "w") as fo:
   for token in bert_vocab:
     fo.write(token+"\n")
 
-!mkdir ./shards
-!split -a 4 -l 5000 -d thms_ls.train ./shards/shard_
 
 MAX_SEQ_LENGTH = 512 #@param {type:"integer"}
 MASKED_LM_PROB = 0.15 #@param
@@ -102,11 +129,6 @@ DO_LOWER_CASE = False #@param {type:"boolean"}
 PRETRAINING_DIR = "pretraining_data" #@param {type:"string"}
 # controls how many parallel processes xargs can create
 PROCESSES = 2 #@param {type:"integer"}
-
-!ls
-!gsutil cp gs://bert-bucket-golkarolka/create_pretraining_data.py bert/
-!gsutil cp gs://bert-bucket-golkarolka/tokenization.py bert/
-# !cat bert/tokenization.py
   
 
 
@@ -129,8 +151,6 @@ PROCESSES = 2 #@param {type:"integer"}
                              
 # tf.gfile.MkDir(PRETRAINING_DIR)
 # !$XARGS_CMD
-
-!gsutil -m cp -R gs://bert-bucket-golkarolka/pretraining_data .
 
 BUCKET_NAME = "bert-bucket-golkarolka" #@param {type:"string"}
 MODEL_DIR = "bert_model" #@param {type:"string"}
@@ -169,9 +189,6 @@ with open("{}/{}".format(MODEL_DIR, VOC_FNAME), "w") as fo:
   for token in bert_vocab:
     fo.write(token+"\n")
 
-
-if BUCKET_NAME:
-  !gsutil -m cp -r $MODEL_DIR $PRETRAINING_DIR gs://$BUCKET_NAME
 
 BUCKET_NAME = "bert-bucket-golkarolka" #@param {type:"string"}
 MODEL_DIR = "bert_model" #@param {type:"string"}
