@@ -141,7 +141,7 @@ with open("{}/{}".format(MODEL_DIR, VOC_FNAME), "w") as fo:
     fo.write(token+"\n")
 
 
-BUCKET_NAME = "bert-bucket-golkarolka" #@param {type:"string"}
+BUCKET_NAME = "zpp-bucket-1920" #@param {type:"string"}
 MODEL_DIR = "bert_model" #@param {type:"string"}
 PRETRAINING_DIR = "pretraining_data" #@param {type:"string"}
 VOC_FNAME = "vocab.txt" #@param {type:"string"}
