@@ -1,4 +1,9 @@
+thms_ls.train
+vocab.txt
+vocab_thms_ls.txt
 .idea/
 venv/
 bert/
-
+bert_model/
+pretraining_data/
+shards/
