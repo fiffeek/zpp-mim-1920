@@ -8,9 +8,14 @@ import tensorflow as tf
 import sentencepiece as spm
 from glob import glob
 from tensorflow.keras.utils import Progbar
+from . bert_config import BertConfig
+
+sys.path.append("..")
+sys.path.append(".")
+sys.path.append("bert")
+
 from bert import modeling, optimization, tokenization
 from bert.run_pretraining import input_fn_builder, model_fn_builder
-from . bert_config import BertConfig
 
 
 class BertRunner:
@@ -35,11 +40,6 @@ class BertRunner:
           "type_vocab_size": 2,
           "vocab_size": self.config.VOC_SIZE
         }
-
-    def append_bert(self):
-        sys.path.append("..")
-        sys.path.append(".")
-        sys.path.append("bert")
 
     def setup_logger(self):
         log = logging.getLogger('tensorflow')
