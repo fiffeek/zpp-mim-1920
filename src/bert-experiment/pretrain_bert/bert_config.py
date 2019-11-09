@@ -26,7 +26,7 @@ class BertConfig:
                  project):
         self.bert_folder = bert_folder
         self.VOC_SIZE = voc_size
-        self.vocam_thms_ls_path = vocab_thms_file_path
+        self.vocab_thms_file_path = vocab_thms_file_path
         self.VOC_FNAME = vocab_filename
         self.MAX_SEQ_LENGTH = max_seq_length
         self.MASKED_LM_PROB = masked_lm_prob
