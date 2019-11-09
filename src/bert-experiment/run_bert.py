@@ -1,6 +1,7 @@
 import argparse
 from wemux import TmuxSession
 from pretrain_bert import BertConfig
+from pretrain_bert import BertRunner
 import logging
 
 
@@ -38,7 +39,7 @@ def setup_parser():
 def run_bert_pretraining(args):
     session = TmuxSession(args.session_name)
     session.run_wemux_session()
-    session.send_keys("python3 {}".format(args.executable))
+    session.connect_to_session()
     bert_config = BertConfig(
         bert_folder=args.bert_folder,
         voc_size=args.voc_size,
@@ -62,6 +63,8 @@ def run_bert_pretraining(args):
         tpu_zone=args.zone,
         project=args.project_name
     )
+    bert_runner = BertRunner(bert_config)
+    bert_runner.run()
 
 
 setup_logging()

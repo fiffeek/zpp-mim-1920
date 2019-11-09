@@ -23,6 +23,9 @@ class TmuxSession:
         os.system("{} send-keys -t \"{}:{}\" \"{}\" Enter"
                   .format(tmux_wrapper, self.session_name, session_number, command))
 
+    def connect_to_session(self):
+        os.system(" $ {} attach-session -t {}".format(tmux_wrapper, self.session_name))
+
     def info_for_user(self):
         logging.info("To connect to session:")
         logging.info(" $ {} attach-session -t {}".format(tmux_wrapper, self.session_name))

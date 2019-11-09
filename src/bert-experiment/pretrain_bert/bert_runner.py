@@ -7,7 +7,6 @@ import logging
 import tensorflow as tf
 import sentencepiece as spm
 from glob import glob
-from google.colab import auth, drive
 from tensorflow.keras.utils import Progbar
 from bert import modeling, optimization, tokenization
 from bert.run_pretraining import input_fn_builder, model_fn_builder
