@@ -38,6 +38,7 @@ class BertRunner:
 
     def append_bert(self):
         sys.path.append("..")
+        sys.path.append(".")
         sys.path.append("bert")
 
     def setup_logger(self):
