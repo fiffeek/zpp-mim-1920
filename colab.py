@@ -6,51 +6,30 @@ import random
 import logging
 import tensorflow as tf
 import sentencepiece as spm
-
 from glob import glob
 from google.colab import auth, drive
 from tensorflow.keras.utils import Progbar
-
-sys.path.append("bert")
-auth.authenticate_user()
-
-sys.path.append("bert")
-
 from bert import modeling, optimization, tokenization
 from bert.run_pretraining import input_fn_builder, model_fn_builder
 
-auth.authenticate_user()
-  
-# configure logging
-log = logging.getLogger('tensorflow')
-log.setLevel(logging.INFO)
 
-# create formatter and add it to the handlers
-formatter = logging.Formatter('%(asctime)s :  %(message)s')
-sh = logging.StreamHandler()
-sh.setLevel(logging.INFO)
-sh.setFormatter(formatter)
-log.handlers = [sh]
+def append_bert():
+    sys.path.append("bert")
+
+
+def setup_logger():
+    log = logging.getLogger('tensorflow')
+    log.setLevel(logging.INFO)
+    formatter = logging.Formatter('%(asctime)s :  %(message)s')
+    sh = logging.StreamHandler()
+    sh.setLevel(logging.INFO)
+    sh.setFormatter(formatter)
+    log.handlers = [sh]
+
 
 USE_TPU = True
-AVAILABLE =  {'af','ar','bg','bn','br','bs','ca','cs',
-              'da','de','el','en','eo','es','et','eu',
-              'fa','fi','fr','gl','he','hi','hr','hu',
-              'hy','id','is','it','ja','ka','kk','ko',
-              'lt','lv','mk','ml','ms','nl','no','pl',
-              'pt','pt_br','ro','ru','si','sk','sl','sq',
-              'sr','sv','ta','te','th','tl','tr','uk',
-              'ur','vi','ze_en','ze_zh','zh','zh_cn',
-              'zh_en','zh_tw','zh_zh'}
 
-LANG_CODE = "en" #@param {type:"string"}
-
-assert LANG_CODE in AVAILABLE, "Invalid language code selected"
-
-MODEL_PREFIX = "tokenizer" #@param {type: "string"}
-VOC_SIZE = 2000 #@param {type:"integer"}
-SUBSAMPLE_SIZE = 60000 #@param {type:"integer"}
-NUM_PLACEHOLDERS = 256 #@param {type:"integer"}
+VOC_SIZE = 2000
 
 bert_vocab = []
 
@@ -75,43 +54,12 @@ with open(VOC_FNAME, "w") as fo:
 MAX_SEQ_LENGTH = 512 #@param {type:"integer"}
 MASKED_LM_PROB = 0.15 #@param
 MAX_PREDICTIONS = 20 #@param {type:"integer"}
-DO_LOWER_CASE = False #@param {type:"boolean"}
 
 PRETRAINING_DIR = "pretraining_data" #@param {type:"string"}
-# controls how many parallel processes xargs can create
-PROCESSES = 2 #@param {type:"integer"}
-  
 
-
-# XARGS_CMD = ("ls ./shards/ | "
-#              "xargs -n 1 -P {} -I{} "
-#              "python3 bert/create_pretraining_data.py "
-#              "--input_file=./shards/{} "
-#              "--output_file={}/{}.tfrecord "
-#              "--vocab_file={} "
-#              "--do_lower_case={} "
-#              "--max_predictions_per_seq={} "
-#              "--max_seq_length={} "
-#              "--masked_lm_prob={} "
-#              "--random_seed=34 "
-#              "--dupe_factor=5")
-
-# XARGS_CMD = XARGS_CMD.format(PROCESSES, '{}', '{}', PRETRAINING_DIR, '{}', 
-#                              VOC_FNAME, DO_LOWER_CASE, 
-#                              MAX_PREDICTIONS, MAX_SEQ_LENGTH, MASKED_LM_PROB)
-                             
-# tf.gfile.MkDir(PRETRAINING_DIR)
-# !$XARGS_CMD
-
-BUCKET_NAME = "zpp-bucket-1920" #@param {type:"string"}
-MODEL_DIR = "bert_model" #@param {type:"string"}
+BUCKET_NAME = "zpp-bucket-1920"
+MODEL_DIR = "bert_model"
 tf.gfile.MkDir(MODEL_DIR)
-
-if not BUCKET_NAME:
-  log.warning("WARNING: BUCKET_NAME is not set. "
-              "You will not be able to train the model.")
-
-# use this for BERT-base
 
 bert_base_config = {
   "attention_probs_dropout_prob": 0.1, 
@@ -141,10 +89,10 @@ with open("{}/{}".format(MODEL_DIR, VOC_FNAME), "w") as fo:
     fo.write(token+"\n")
 
 
-BUCKET_NAME = "zpp-bucket-1920" #@param {type:"string"}
-MODEL_DIR = "bert-bucket-golkarolka/bert_model" #@param {type:"string"}
-PRETRAINING_DIR = "bert-bucket-golkarolka/pretraining_data" #@param {type:"string"}
-VOC_FNAME = "vocab.txt" #@param {type:"string"}
+BUCKET_NAME = "zpp-bucket-1920"
+MODEL_DIR = "bert-bucket-golkarolka/bert_model"
+PRETRAINING_DIR = "bert-bucket-golkarolka/pretraining_data"
+VOC_FNAME = "vocab.txt"
 
 # Input data pipeline config
 TRAIN_BATCH_SIZE = 128 #@param {type:"integer"}
@@ -217,3 +165,5 @@ train_input_fn = input_fn_builder(
 estimator.train(input_fn=train_input_fn, max_steps=TRAIN_STEPS)
 
 
+append_bert()
+setup_logger()

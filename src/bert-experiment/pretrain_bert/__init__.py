@@ -1,0 +1,1 @@
+from . bert_config import BertConfig

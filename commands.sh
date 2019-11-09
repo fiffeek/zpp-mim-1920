@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 gsutil cp gs://zpp-bucket-1920/bert-bucket-golkarolka/thms_ls.train .
 gsutil cp gs://zpp-bucket-1920/bert-bucket-golkarolka/vocab_thms_ls.txt .
 mkdir ./shards
