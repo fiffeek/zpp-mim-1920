@@ -125,7 +125,6 @@ class BertRunner:
         estimator.train(input_fn=train_input_fn, max_steps=self.config.TRAIN_STEPS)
 
     def run(self, use_checkpoint=True):
-        self.append_bert()
         log = self.setup_logger()
         self.setup_vocab()
         self.setup_run(use_checkpoint, log)
