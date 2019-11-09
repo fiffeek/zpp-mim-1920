@@ -38,7 +38,7 @@ def setup_parser():
 def run_bert_pretraining(args):
     session = TmuxSession(args.session_name)
     session.run_wemux_session()
-    session.send_keys(f"python3 {args.executable}")
+    session.send_keys("python3 {}".format(args.executable))
     bert_config = BertConfig(
         bert_folder=args.bert_folder,
         voc_size=args.voc_size,
