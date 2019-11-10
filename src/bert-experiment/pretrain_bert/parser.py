@@ -3,14 +3,14 @@ import argparse
 
 def setup_parser():
     parser_tmp = argparse.ArgumentParser()
-    parser_tmp.add_argument("-s", "--session-name", default="bert_pretraining", help="Name of a tmux console")
-    parser_tmp.add_argument("-x", "--executable", default="pretrain_bert/bert_runner.py", help="Name of executable "
+    parser_tmp.add_argument("--session-name", default="bert_pretraining", help="Name of a tmux console")
+    parser_tmp.add_argument("--executable", default="pretrain_bert/bert_runner.py", help="Name of executable "
                                                                                                "bert pretraining")
-    parser_tmp.add_argument("-z", "--zone", default="europe-west4-a", help="tpu zone")
-    parser_tmp.add_argument("-n", "--tpu-name", default="devshell-vm-33444283-d998-465d-89d5-99a3bee1b061", help="tpu name to run")
-    parser_tmp.add_argument("-p", "--project-name", default="zpp-mim-1920", help="gcp project name/id in which you run tpu")
-    parser_tmp.add_argument("-b", "--bert-folder", default="bert", help="a folder name to which bert was cloned")
-    parser_tmp.add_argument("-v", "--voc-size", default=2000, help="vocabulary size for a tokenizer")
+    parser_tmp.add_argument("--zone", default="europe-west4-a", help="tpu zone")
+    parser_tmp.add_argument("--tpu-name", default="devshell-vm-33444283-d998-465d-89d5-99a3bee1b061", help="tpu name to run")
+    parser_tmp.add_argument("--project-name", default="zpp-mim-1920", help="gcp project name/id in which you run tpu")
+    parser_tmp.add_argument("--bert-folder", default="bert", help="a folder name to which bert was cloned")
+    parser_tmp.add_argument("--voc-size", default=2000, help="vocabulary size for a tokenizer")
     parser_tmp.add_argument("--vocab-thms-ls", default="vocab_thms_ls.txt", help="vocab thms ls file path")
     parser_tmp.add_argument("--vocab-filename", default="vocab.txt", help="vocab file name")
     parser_tmp.add_argument("--bert-config-filename", default="bert_config.json", help="config for bert given by a file name")

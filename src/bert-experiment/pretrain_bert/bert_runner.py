@@ -13,8 +13,8 @@ sys.path.append(".")
 sys.path.append("..")
 sys.path.append("bert")
 
-from . bert_config import BertConfig
-from . parser import setup_parser
+from bert_config import BertConfig
+from parser import setup_parser
 from bert import modeling, optimization, tokenization
 from bert.run_pretraining import input_fn_builder, model_fn_builder
 
