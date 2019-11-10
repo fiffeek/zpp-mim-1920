@@ -19,6 +19,7 @@ def setup_parser():
     parser_tmp.add_argument("--tpu-cores", default=8)
     parser_tmp.add_argument("--eval-batch-size", default=64)
     parser_tmp.add_argument("--train-batch-size", default=128)
+    parser_tmp.add_argument("--config-dump", default="config_dump.json", help="dump of a config")
     parser_tmp.add_argument("--max-predictions", default=20)
     parser_tmp.add_argument("--max-seq-length", default=512)
     parser_tmp.add_argument("--masked-lm-prob", default=0.8)

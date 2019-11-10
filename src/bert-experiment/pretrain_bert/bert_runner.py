@@ -132,6 +132,9 @@ class BertRunner:
 
 
 args = setup_parser().parse_args()
+if args.config_dump is not None:
+    f = open(args.config_dump, "r")
+    args = json.loads(f.read())
 bert_config = BertConfig(
         bert_folder=args.bert_folder,
         voc_size=args.voc_size,
