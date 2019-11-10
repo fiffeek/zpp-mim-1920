@@ -15,6 +15,7 @@ sys.path.append("bert")
 
 from bert_config import BertConfig
 from parser import setup_parser
+from dict_helper import AttrDict
 from bert import modeling, optimization, tokenization
 from bert.run_pretraining import input_fn_builder, model_fn_builder
 
@@ -134,7 +135,7 @@ class BertRunner:
 args = setup_parser().parse_args()
 if args.config_dump is not None:
     f = open(args.config_dump, "r")
-    args = json.loads(f.read())
+    args = AttrDict(json.loads(f.read()))
 bert_config = BertConfig(
         bert_folder=args.bert_folder,
         voc_size=args.voc_size,
