@@ -8,12 +8,13 @@ import tensorflow as tf
 import sentencepiece as spm
 from glob import glob
 from tensorflow.keras.utils import Progbar
-from . bert_config import BertConfig
 
-sys.path.append("..")
 sys.path.append(".")
+sys.path.append("..")
 sys.path.append("bert")
 
+from bert_config import BertConfig
+from parser import setup_parser
 from bert import modeling, optimization, tokenization
 from bert.run_pretraining import input_fn_builder, model_fn_builder
 
@@ -128,3 +129,30 @@ class BertRunner:
         log = self.setup_logger()
         self.setup_vocab()
         self.setup_run(use_checkpoint, log)
+
+
+args = setup_parser().parse_args()
+bert_config = BertConfig(
+        bert_folder=args.bert_folder,
+        voc_size=args.voc_size,
+        vocab_thms_file_path=args.vocab_thms_ls,
+        vocab_filename=args.vocab_filename,
+        max_seq_length=args.max_seq_length,
+        masked_lm_prob=args.masked_lm_prob,
+        max_predictions=args.max_predictions,
+        pretraining_dir=args.pretraining_dir,
+        bucket_name=args.bucket_name,
+        model_dir=args.model_dir,
+        gcp_model_dir=args.gcp_model_dir,
+        train_batch_size=args.train_batch_size,
+        eval_batch_size=args.eval_batch_size,
+        train_steps=args.train_steps,
+        save_checkpoints_steps=args.checkpoints_steps,
+        num_tpu_cores=args.tpu_cores,
+        bert_config_file=args.bert_config_filename,
+        use_tpu=True,
+        tpu_name=args.tpu_name,
+        tpu_zone=args.zone,
+        project=args.project_name)
+runner = BertRunner(bert_config)
+runner.run()
