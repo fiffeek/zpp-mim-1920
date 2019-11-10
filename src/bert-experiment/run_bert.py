@@ -1,4 +1,4 @@
-from parser import setup_parser
+from pretrain_bert import setup_parser
 from wemux import TmuxSession
 import logging
 
