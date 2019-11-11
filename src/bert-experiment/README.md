@@ -3,4 +3,4 @@
 if you run the first time:
 ```./commands.sh```
 afterwards just go with:
-```sudo python3 run_bert.py```
+```python3 run_bert.py```
