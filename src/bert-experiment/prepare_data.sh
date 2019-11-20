@@ -18,7 +18,7 @@ gsutil cp gs://zpp-bucket-1920/bert-bucket-golkarolka/bert_model/bert_config.jso
 # Get and prepare data for fine-tuning
 mkdir bert/fine-tune_data
 gsutil cp gs://zpp-bucket-1920/bert-bucket-golkarolka/auto-tune.csv bert/fine-tune_data/
-python fine-tuning/prepare_fine-tuning_data.py
+python fine-tuning/prepare_data.py
 
 # Directory for output files
 mkdir bert/bert_output
