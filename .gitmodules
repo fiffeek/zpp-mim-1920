@@ -1,0 +1,6 @@
+[submodule "bert"]
+	path = bert
+	url = https://github.com/Kerram/bert
+[submodule "deepmath"]
+	path = deepmath
+	url = https://github.com/Kerram/deepmath
