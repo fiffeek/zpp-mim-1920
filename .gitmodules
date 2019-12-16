@@ -4,3 +4,6 @@
 [submodule "deepmath"]
 	path = deepmath
 	url = https://github.com/Kerram/deepmath
+[submodule "holist-train"]
+	path = holist-train
+	url = https://github.com/Kerram/holist-train
