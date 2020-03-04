@@ -6,8 +6,8 @@ def setup_parser():
     parser_tmp.add_argument("--session-name", default="bert_pretraining", help="Name of a tmux console")
     parser_tmp.add_argument("--executable", default="pretrain_bert/bert_runner.py", help="Name of executable "
                                                                                                "bert pretraining")
-    parser_tmp.add_argument("--zone", default="europe-west4-a", help="tpu zone")
-    parser_tmp.add_argument("--tpu-name", default="devshell-vm-33444283-d998-465d-89d5-99a3bee1b061", help="tpu name to run")
+    parser_tmp.add_argument("--zone", default="us-central1-f", help="tpu zone")
+    parser_tmp.add_argument("--tpu-name", default="zpp-holist-1920", help="tpu name to run")
     parser_tmp.add_argument("--project-name", default="zpp-mim-1920", help="gcp project name/id in which you run tpu")
     parser_tmp.add_argument("--bert-folder", default="bert", help="a folder name to which bert was cloned")
     parser_tmp.add_argument("--voc-size", default=2000, help="vocabulary size for a tokenizer")
